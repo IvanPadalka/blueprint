@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+Blog
+{% endblock %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+        <input class="form-control" type="text" name="q" placeholder="Search" {% if request.args.get('q') != None %}
+        value="{{request.args.get('q')}}" {%endif%}>
+        </div>
+       <button type="submit" class="btn btn-primary mb-2">Search</button>
+    </form>
+    <div class="box">
+    <div class="text-center">
+        {% for cat, msg in get_flashed_messages(True) %}
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-{{cat}}">{{msg}}</li>
+        </ul>
+        {% endfor %}
+        {% for post in pages.items %}
+        <h1 style="font-size: 25px;" >{{post.title}}</h1>
+        <h5 style="text-align: left;">{{post.body}}</h5> <br>
+        <inline> <p style="text-align: left;">Post created by: <strong>{{ post.author.username }}</strong></p></inline> <br>
+        <inline><p style="text-align: left;"> Create date: {{post.timestamp}}</p></inline><br>
+        <inline><p style="text-align: left;">Update date: {{post.update_time}}</p></inline><br>
+        <p></p>
+        <a class="btn btn-primary" href="{{url_for('post_bp.post', id=post.id)}}" style="color: white;">Open</a>
+        {% if current_user.username == post.author.username %}
+        <inline><a class="btn btn-primary" href="{{url_for('post_bp.edit_post', id=post.id)}}" style="color: white;">Edit</a></inline>
+        {% endif %}
+        <hr>
+        {% endfor %}
+
+        <div class="text-right">
+            <a href="{{ url_for('post_bp.posts', page=pages.prev_num, q=q) }}"
+               class="btn btn-outline-dark
+       {% if pages.page == 1 %}disabled{% endif %}">
+                &laquo;
+            </a>
+
+            {% for page_num in pages.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+            {% if pages.page == page_num %}
+            <a href="{{ url_for('post_bp.posts', page=page_num, q=q) }}"
+               class="btn btn-primary" style="color: white;">
+                {{ page_num }}
+            </a>
+            {% else %}
+            <a href="{{ url_for('post_bp.posts', page=page_num, q=q) }}"
+               class="btn btn-primary" style="color: white;">
+                {{ page_num }}
+            </a>
+            {% endif %}
+            {% else %}
+            ...
+            {% endif %}
+            {% endfor %}
+
+            <a href="{{ url_for('post_bp.posts', page=pages.next_num, q=q) }}"
+               class="btn btn-outline-dark
+       {% if pages.page == pages.pages %}disabled{% endif %}">
+                &raquo;
+            </a>
+        </div>
+         <p class="text-right mt-3">
+            Opened page {{ pages.page }} from {{ pages.pages }}
+        </p>
+
+    </div>
+</div>
+</div>
+</div>
+
+{% endblock %}

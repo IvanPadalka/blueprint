@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/styles/style.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    </head>
+<body>
+        <section class="hero is-primary is-fullheight">
+            <div class="hero-head">
+                <nav class="navbar">
+                    <div class="container">
+                        <div id="navbarMenuHeroA" class="navbar-menu">
+                            <div class="navbar-end">
+                                <a class="navbar-item" href="{{url_for('post_bp.posts')}}">Main</a>
+
+                                {% if current_user.is_active %}
+                                 <a class="navbar-item" href="{{url_for('user_bp.account')}}">Account</a>
+                                 <a class="navbar-item" href="{{url_for('post_bp.create_post')}}">New post</a>
+                                {% endif %}
+
+                                {% if current_user.is_active %}
+                                <a class="navbar-item" href="{{url_for('user_bp.logout')}}">Logout</a>
+                                {% else %}
+                                <a class="navbar-item" href="{{url_for('user_bp.login')}}">Login</a>
+                                <a class="navbar-item" href="{{url_for('user_bp.register')}}">Registration</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            {% block content %}{% endblock %}
+        </section>
+    </nav>
+</div>
+</body>
+</html>

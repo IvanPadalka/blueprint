@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Sign in</h3>
+<div class="box">
+
+<p>New User? <a href="{{ url_for('user_bp.register') }}">Click to Register!</a></p>
+
+{% from "_render_field.html" import render_field %}
+
+<form action="{{ url_for('user_bp.login') }}" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="field">
+        <div class="control">
+            {{ render_field(form.email) }}
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            {{ render_field(form.password) }}
+        </div>
+    </div>
+    <div class="form-check">
+            {{ form.remember_me(class_="form-check-input") }}
+            {{ form.remember_me.label(class_="form-check-label") }}
+        </div>
+        <br>
+        {{ form.submit(class_="button is-block is-info is-large is-fullwidth") }}
+</form>
+</div>
+</div>
+
+{% endblock %}
+
+
+
